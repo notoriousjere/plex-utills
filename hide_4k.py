@@ -2,9 +2,12 @@ from typing import List, Union
 from plexapi.server import PlexServer
 from plexapi.library import MovieSection, ShowSection
 from plexapi.video import Movie, Show
+import os
+from dotenv import load_dotenv
 
-
-
+load_dotenv()
+PLEX_URL = os.getenv("PLEX_URL")
+PLEX_TOKEN = os.getenv("PLEX_TOKEN")
 MOVIES_LIB = "Movies"
 SHOWS_LIB = "TV Shows"
 LABEL_4K = "4K"
@@ -15,9 +18,9 @@ plex = PlexServer(PLEX_URL, PLEX_TOKEN)
 
 def tag_item(item: Union[Movie, Show]):
     if "4K" in [label.tag for label in item.labels]:
-        print(f"{item.title}: Already tagged with '4K'")
+        print(f"'{item.title}' -- Already tagged with '4K'")
     else:
-        print(f"{item.title}: Adding new tag '4K'")
+        print(f"'{item.title}' -- Adding new tag '4K'")
         item.addLabel(LABEL_4K)
 
 
@@ -49,6 +52,6 @@ print("*****************\n")
 tag_movies(plex.library.section(MOVIES_LIB))
 
 print("\n*****************")
-print("*   TV Shows    *")
+print("*   TV Shows   *")
 print("*****************\n")
 tag_shows(plex.library.section(SHOWS_LIB))
